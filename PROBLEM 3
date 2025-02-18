@@ -1,0 +1,56 @@
+class TicketBookingSystem {
+    private int availableSeats;
+
+    public TicketBookingSystem(int seats) {
+        this.availableSeats = seats;
+    }
+
+    public synchronized void bookSeat(String customerType) {
+        if (availableSeats > 0) {
+            System.out.println(customerType + " is booking a seat...");
+            availableSeats--;
+            System.out.println(customerType + " booked a seat. Seats remaining: " + availableSeats);
+        } else {
+            System.out.println("No seats available.");
+        }
+    }
+}
+
+class BookingThread extends Thread {
+    private TicketBookingSystem bookingSystem;
+    private String customerType;
+
+    public BookingThread(TicketBookingSystem bookingSystem, String customerType) {
+        this.bookingSystem = bookingSystem;
+        this.customerType = customerType;
+    }
+
+    @Override
+    public void run() {
+        bookingSystem.bookSeat(customerType);
+    }
+}
+
+public class TicketBookingApp {
+    public static void main(String[] args) {
+        TicketBookingSystem bookingSystem = new TicketBookingSystem(5);
+
+        
+        BookingThread vipCustomer1 = new BookingThread(bookingSystem, "VIP Customer 1");
+        BookingThread vipCustomer2 = new BookingThread(bookingSystem, "VIP Customer 2");
+        BookingThread regularCustomer1 = new BookingThread(bookingSystem, "Regular Customer 1");
+        BookingThread regularCustomer2 = new BookingThread(bookingSystem, "Regular Customer 2");
+
+    
+        vipCustomer1.setPriority(Thread.MAX_PRIORITY);
+        vipCustomer2.setPriority(Thread.MAX_PRIORITY);
+        regularCustomer1.setPriority(Thread.NORM_PRIORITY);
+        regularCustomer2.setPriority(Thread.NORM_PRIORITY);
+
+      
+        vipCustomer1.start();
+        regularCustomer1.start();
+        regularCustomer2.start();
+        vipCustomer2.start();
+    }
+}
