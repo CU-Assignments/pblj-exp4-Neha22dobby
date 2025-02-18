@@ -1,0 +1,57 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Scanner;
+
+class Card {
+    private String rank;
+    private String suit;
+
+    public Card(String rank, String suit) {
+        this.rank = rank;
+        this.suit = suit;
+    }
+
+
+    public void display() {
+        System.out.println(rank + " of " + suit);
+    }
+
+ 
+    public String getSuit() {
+        return suit;
+    }
+}
+
+public class CardCollection {
+    public static void main(String[] args) {
+      
+        Collection<Card> deck = new ArrayList<>();
+
+   
+        deck.add(new Card("Ace", "Spades"));
+        deck.add(new Card("King", "Hearts"));
+        deck.add(new Card("Queen", "Diamonds"));
+        deck.add(new Card("2", "Clubs"));
+        deck.add(new Card("7", "Spades"));
+
+     
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter suit to search for (Spades, Hearts, Clubs, Diamonds): ");
+        String searchSuit = scanner.nextLine();
+
+        
+        boolean found = false;
+        for (Card card : deck) {
+            if (card.getSuit().equalsIgnoreCase(searchSuit)) {
+                card.display();
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No cards found with the suit: " + searchSuit);
+        }
+
+        scanner.close();
+    }
+}
